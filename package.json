@@ -12,5 +12,8 @@
   "dependencies": {
     "express": "^4.17.3",
     "todoist": "^0.5.1"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
