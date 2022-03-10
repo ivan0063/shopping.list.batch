@@ -1,23 +1,24 @@
-const { getProjects, getItems, addItemsToInbox } = require('./service/todoist.service');
+const express = require('express');
+const app =  express();
 
-(async ()=>{
-    try {
-        const projects = await getProjects();
+// Service
+const fillInboxListService = require('./service/fillInboxList.service');
 
-        const idShoppingList = projects
-            .filter(project => project.name === 'Lista de compras de Alexa')
-            .map(project => project.id)
-            .pop()
+app.get('/todoist/load/inbox', (req, res) => {
+    const authHeader = res.header("jimm-auth-accesses");
 
-        const itemsTodoist = await getItems();
-        const items = itemsTodoist
-            .filter(item => item.project_id === idShoppingList)
-            .map(item => item.content);
-
-        await addItemsToInbox(items);
-
-        console.log("Done");
-    } catch (err) {
-        console.error("Error");
+    if("259f2660-9f6d-11ec-b909-0242ac120002" !== authHeader) {
+        return res.status(401).json({
+            status: "Not authenticated"
+        });
     }
-})()
+
+    fillInboxListService.prepareEventsInbox()
+    res.json({
+        status: "done"
+    })
+});
+
+app.listen(3000, ()=> {
+    console.log('Running on port 3000');
+})

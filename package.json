@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.3",
+    "koa-ejs": "^4.3.0",
     "todoist": "^0.5.1"
   }
 }
